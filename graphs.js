@@ -1,3 +1,4 @@
+import {additionalGraphs,firmGraphSVG} from './graphs34.js';
 const make=(id,level,topic,model,prompt,fields,expected,explanation,zh)=>({id,level,topic,unit:Number(topic[0]),model,prompt,fields,expected,explanation,zh,target:90});
 const axes={x:['Quantity','Price','Good X','Good Y'],y:['Price','Quantity','Good Y','Good X']};
 const shift={curve:['Demand','Supply'],direction:['Right','Left'],price:['Up','Down'],quantity:['Up','Down']};
@@ -20,9 +21,11 @@ make('g-build-market',4,'2.6','market','Build an unregulated competitive market 
 make('g-build-ceiling',4,'2.8','ceiling','Build a binding price ceiling in a competitive market.',build,{x:'Quantity',y:'Price',curves:'Demand + Supply',label:'Ceiling below E',outcome:'Shortage'},'Below equilibrium, quantity demanded exceeds quantity supplied: a shortage.','有效最高限价低于均衡价，产生短缺。'),
 make('g-build-floor',4,'2.8','floor','Build a binding price floor in a competitive market.',build,{x:'Quantity',y:'Price',curves:'Demand + Supply',label:'Floor above E',outcome:'Surplus'},'Above equilibrium, quantity supplied exceeds quantity demanded: a surplus.','有效最低限价高于均衡价，产生过剩。')
 ];
+graphTasks.push(...additionalGraphs);
 export function gradeGraph(task,answer){const parts=Object.entries(task.expected).map(([key,value])=>({key,correct:answer[key]===value,expected:value,error:['x','y'].includes(key)?'G1':key==='direction'?'G3':['price','quantity','outcome'].includes(key)?'G4':key==='label'?'G5':'G2'}));return {parts,score:Math.round(parts.filter(p=>p.correct).length/parts.length*100),correct:parts.every(p=>p.correct),error:parts.find(p=>!p.correct)?.error||null};}
 const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 export function graphSVG(model='market',config={}){
+ const firm=firmGraphSVG(model,config);if(firm)return firm;
  const sx=q=>58+q*2.9,sy=p=>292-p*2.25;const line=(q1,p1,q2,p2,color,dash='')=>`<line x1="${sx(q1)}" y1="${sy(p1)}" x2="${sx(q2)}" y2="${sy(p2)}" stroke="${color}" stroke-width="2.6" ${dash?`stroke-dasharray="${dash}"`:''}/>`;
  const txt=(q,p,s,extra='')=>`<text x="${sx(q)}" y="${sy(p)}" ${extra}>${esc(s)}</text>`;
  const show=config.show!==false;let content='';let isPpc=model==='ppc';let choice=config.curves;
