@@ -1,3 +1,4 @@
+import {finalQuestions} from './units56.js';
 import {additionalQuestions} from './units34.js';
 import {explanationCorrections} from './explanations.js';
 import {importedQuestions} from './imported.js';
@@ -50,4 +51,4 @@ const data=[
 ['2.9','calculation','A $2 tariff leaves imports of 30 units. Tariff revenue is:',['$15','$30','$60','$32'],2,'Tariff revenue = $2 × 30 post-tariff imported units = $60.','关税收入＝单位关税×征税后进口量。','M1']
 ];
 export const authoredQuestions=data.map((r,i)=>({id:`original-${String(i+1).padStart(3,'0')}`,topic:r[0],unit:Number(r[0][0]),skill:r[1],stem:r[2],options:r[3].map((text,j)=>({key:'ABCD'[j],text,error:j===r[4]?null:r[7]})),correct:'ABCD'[r[4]],explanation:r[5],zh:r[6],target:75,source:'Econ Coach original'}));
-export const questions=[...authoredQuestions,...additionalQuestions,...importedQuestions.map(q=>{const correction=explanationCorrections[q.sourceId];return correction?{...q,explanation:correction[0],zh:correction[1]}:q;})];
+export const questions=[...authoredQuestions,...additionalQuestions,...finalQuestions,...importedQuestions.map(q=>{const correction=explanationCorrections[q.sourceId];return correction?{...q,explanation:correction[0],zh:correction[1]}:q;})];

@@ -1,6 +1,7 @@
+import {finalUnits,finalRows} from './units56.js';
 import {additionalUnits,additionalRows} from './units34.js';
 import {importedVocabulary} from './imported.js';
-export const units=[{id:1,title:'Basic Economic Concepts',zh:'基本经济概念',description:'Start with choices. Understand how people allocate scarce resources.',color:'green'},{id:2,title:'Supply and Demand',zh:'供给与需求',description:'Read the market. Connect incentives, prices, policy and trade.',color:'blue'},...additionalUnits];
+export const units=[{id:1,title:'Basic Economic Concepts',zh:'基本经济概念',description:'Start with choices. Understand how people allocate scarce resources.',color:'green'},{id:2,title:'Supply and Demand',zh:'供给与需求',description:'Read the market. Connect incentives, prices, policy and trade.',color:'blue'},...additionalUnits,...finalUnits];
 // Original summaries and practice material aligned to the user-supplied 2020 CED.
 const rows=[
 ['1.1','Scarcity','稀缺性','Limited resources require choices.',
@@ -64,7 +65,7 @@ const rows=[
 'At the world price, domestic consumers buy 90 and producers supply 30, so imports are 60. If a $2 tariff leaves imports of 40, revenue is $80.','关税收入按征税后的进口量计算，不是国内总消费量。','Tariffs and welfare','A tariff protects domestic producers but raises consumer prices and creates efficiency losses in the small-country model.','Tariff → domestic price rises → production rises and consumption falls → imports fall','进口关税使消费者受损、国内生产者受益，并产生政府收入与无谓损失。',
 'World price~The price at which a small economy can trade internationally.~世界价格|Imports~Goods purchased from producers abroad.~进口|Exports~Goods sold to buyers abroad.~出口|Tariff~A tax on imported goods.~关税|Import quota~A limit on the quantity of a good that may be imported.~进口配额']
 ];
-rows.push(...additionalRows);
+rows.push(...additionalRows,...finalRows);
 export const topics=rows.map((r)=>({id:r[0],unit:Number(r[0][0]),title:r[1],zh:r[2],summary:r[3],points:r[4],example:r[5],mistake:r[6],conceptTitle:r[7],definition:r[8],logic:r[9].split(' → '),explanation:r[10]}));
 const baseVocabulary=rows.flatMap(r=>r[11].split('|').map((v,i)=>{const [term,definition,zh]=v.split('~');return {id:`v-${r[0]}-${i+1}`,topic:r[0],unit:Number(r[0][0]),term,definition,zh,example:r[5],mistake:r[6]};}));
 export const concepts=topics.flatMap(t=>[{id:`c-${t.id}-1`,topic:t.id,unit:t.unit,title:t.title,definition:t.summary,points:t.points,logic:[],zh:t.zh,example:t.example,mistake:t.mistake},{id:`c-${t.id}-2`,topic:t.id,unit:t.unit,title:t.conceptTitle,definition:t.definition,points:[t.definition],logic:t.logic,zh:t.explanation,example:t.example,mistake:t.mistake}]);
