@@ -1,0 +1,43 @@
+const make=(id,level,topic,model,prompt,fields,expected,explanation,zh)=>({id,level,topic,unit:Number(topic[0]),model,prompt,fields,expected,explanation,zh,target:90});
+const axes={x:['Quantity','Price','Good X','Good Y'],y:['Price','Quantity','Good Y','Good X']};
+const shift={curve:['Demand','Supply'],direction:['Right','Left'],price:['Up','Down'],quantity:['Up','Down']};
+const build={x:['Quantity','Price','Good X','Good Y'],y:['Price','Quantity','Good Y','Good X'],curves:['Demand + Supply','PPC','Demand only','Supply only'],label:['E at intersection','Point A on PPC','Ceiling below E','Floor above E'],outcome:['Efficient frontier','Market clears','Shortage','Surplus']};
+export const graphTasks=[
+make('g-axes-market',1,'2.6','market','Label the axes of a supply-and-demand graph.',axes,{x:'Quantity',y:'Price'},'Quantity belongs on the horizontal axis; price belongs on the vertical axis.','横轴是数量，纵轴是价格。'),
+make('g-axes-ppc',1,'1.3','ppc','Good X is measured horizontally and Good Y vertically. Label this PPC.',axes,{x:'Good X',y:'Good Y'},'A PPC places quantities of two different goods on its axes.','PPC 两轴表示两种商品的数量。'),
+make('g-axes-ceiling',1,'2.8','ceiling','Choose the axes for a market with a binding price ceiling.',axes,{x:'Quantity',y:'Price'},'A price control does not change the market graph’s axes.','价格管制不改变供需图的横纵轴。'),
+make('g-axes-floor',1,'2.8','floor','Choose the axes for a market with a binding price floor.',axes,{x:'Quantity',y:'Price'},'Price is vertical and quantity is horizontal, including with a price floor.','最低限价图同样以价格为纵轴、数量为横轴。'),
+make('g-curve-demand',2,'2.1','market','Identify the downward-sloping curve marked A.',{curve:['Demand','Supply','PPC','Price ceiling']},{curve:'Demand'},'Curve A is demand: higher prices reduce quantity demanded, other things equal.','向下倾斜的是需求曲线。'),
+make('g-curve-supply',2,'2.2','market','Identify the upward-sloping curve marked B.',{curve:['Demand','Supply','PPC','Price floor']},{curve:'Supply'},'Curve B is supply: higher prices increase quantity supplied, other things equal.','向上倾斜的是供给曲线。'),
+make('g-curve-ppc',2,'1.3','ppc','Which model shows this frontier between two outputs?',{curve:['Demand','Supply','PPC','Price ceiling']},{curve:'PPC'},'The PPC represents feasible production combinations, not a price–quantity relationship.','这是两种商品的生产边界，不是价格与数量的关系。'),
+make('g-curve-ceiling',2,'2.8','ceiling','Identify the horizontal policy line below equilibrium.',{curve:['Binding price ceiling','Binding price floor','Demand','PPC']},{curve:'Binding price ceiling'},'A legal maximum below equilibrium is a binding price ceiling.','低于均衡价的法定最高价格是有效最高限价。'),
+make('g-shift-income',3,'2.1','market','Consumer income rises. The product is a normal good. Show the change.',shift,{curve:'Demand',direction:'Right',price:'Up',quantity:'Up'},'Higher income → demand increases → D shifts right → equilibrium price and quantity rise.','正常品收入增加 → 需求右移 → 价格和数量上升。'),
+make('g-shift-cost',3,'2.2','market','A key input becomes more expensive. Show the market response.',shift,{curve:'Supply',direction:'Left',price:'Up',quantity:'Down'},'Higher input costs → supply decreases → S shifts left → price rises and quantity falls.','成本上升 → 供给左移 → 价格上升、数量下降。'),
+make('g-shift-tastes',3,'2.7','market','Consumers become less interested in the product. Show the change.',shift,{curve:'Demand',direction:'Left',price:'Down',quantity:'Down'},'Less interest → demand decreases → price and quantity both fall.','偏好减弱 → 需求左移 → 价格和数量下降。'),
+make('g-shift-tech',3,'2.7','market','New technology reduces production costs. Show the change.',shift,{curve:'Supply',direction:'Right',price:'Down',quantity:'Up'},'Lower costs → supply increases → price falls and quantity rises.','技术进步 → 供给右移 → 价格下降、数量上升。'),
+make('g-build-ppc',4,'1.3','ppc','Build a PPC with Good X horizontal, Good Y vertical, and an efficient point A.',build,{x:'Good X',y:'Good Y',curves:'PPC',label:'Point A on PPC',outcome:'Efficient frontier'},'Two output axes, a PPC and a point on the frontier represent productive efficiency.','两轴为两种产出，A 在 PPC 上表示生产有效率。'),
+make('g-build-market',4,'2.6','market','Build an unregulated competitive market equilibrium.',build,{x:'Quantity',y:'Price',curves:'Demand + Supply',label:'E at intersection',outcome:'Market clears'},'The intersection E has equal quantities demanded and supplied.','供需交点 E 满足需求量等于供给量。'),
+make('g-build-ceiling',4,'2.8','ceiling','Build a binding price ceiling in a competitive market.',build,{x:'Quantity',y:'Price',curves:'Demand + Supply',label:'Ceiling below E',outcome:'Shortage'},'Below equilibrium, quantity demanded exceeds quantity supplied: a shortage.','有效最高限价低于均衡价，产生短缺。'),
+make('g-build-floor',4,'2.8','floor','Build a binding price floor in a competitive market.',build,{x:'Quantity',y:'Price',curves:'Demand + Supply',label:'Floor above E',outcome:'Surplus'},'Above equilibrium, quantity supplied exceeds quantity demanded: a surplus.','有效最低限价高于均衡价，产生过剩。')
+];
+export function gradeGraph(task,answer){const parts=Object.entries(task.expected).map(([key,value])=>({key,correct:answer[key]===value,expected:value,error:['x','y'].includes(key)?'G1':key==='direction'?'G3':['price','quantity','outcome'].includes(key)?'G4':key==='label'?'G5':'G2'}));return {parts,score:Math.round(parts.filter(p=>p.correct).length/parts.length*100),correct:parts.every(p=>p.correct),error:parts.find(p=>!p.correct)?.error||null};}
+const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+export function graphSVG(model='market',config={}){
+ const sx=q=>58+q*2.9,sy=p=>292-p*2.25;const line=(q1,p1,q2,p2,color,dash='')=>`<line x1="${sx(q1)}" y1="${sy(p1)}" x2="${sx(q2)}" y2="${sy(p2)}" stroke="${color}" stroke-width="2.6" ${dash?`stroke-dasharray="${dash}"`:''}/>`;
+ const txt=(q,p,s,extra='')=>`<text x="${sx(q)}" y="${sy(p)}" ${extra}>${esc(s)}</text>`;
+ const show=config.show!==false;let content='';let isPpc=model==='ppc';let choice=config.curves;
+ if(choice)isPpc=choice==='PPC';
+ const x=config.x||(show?(isPpc?'Good X':'Quantity'):'?');const y=config.y||(show?(isPpc?'Good Y':'Price'):'?');
+ if(isPpc){content=`<path d="M58 67 C178 67 299 124 348 292" stroke="#49796a" stroke-width="3" fill="none"/>${txt(77,61,config.identify?'C':'PPC')}<circle cx="249.76" cy="146.392" r="4" fill="#103e42"/>${txt(68,70,'A')}`;}
+ else if(choice==='none'){content='';}
+ else {
+  const D=choice!=='Supply only',S=choice!=='Demand only';
+  if(D)content+=line(5,92,95,8,'#416b9b')+txt(91,13,config.identify?'A':'D₀');
+  if(S)content+=line(5,8,95,92,'#59866a')+txt(89,96,config.identify?'B':'S₀');
+  if(D&&S&&config.equilibrium!==false){content+=line(0,50,50,50,'#aebbb7','4 4')+line(50,0,50,50,'#aebbb7','4 4')+`<circle cx="${sx(50)}" cy="${sy(50)}" r="4" fill="#103e42"/>`+txt(52,54,'E₀')+txt(-8,49,'P₀')+txt(47,-9,'Q₀');}
+  if(config.curve&&config.direction){const delta=config.direction==='Right'?20:-20;const demand=config.curve==='Demand';const eqQ=50+delta/2,eqP=50+(demand?delta/2:-delta/2)*84/90;content+=line(demand?5:5,demand?92+delta*84/90:8-delta*84/90,95,demand?8+delta*84/90:92-delta*84/90,'#d19b45','7 4');content+=txt(78,demand?36+delta*84/90:78-delta*84/90,demand?'D₁':'S₁');content+=`<circle cx="${sx(eqQ)}" cy="${sy(eqP)}" r="4" fill="#bc8732"/>`+txt(eqQ+3,eqP+3,'E₁');}
+  let policy=config.label==='Ceiling below E'?'ceiling':config.label==='Floor above E'?'floor':config.label?'none':model;
+  if((policy==='ceiling'||policy==='floor')&&config.policy!==false){const p=policy==='ceiling'?30:70;const qd=5+(92-p)*90/84,qs=5+(p-8)*90/84;content+=line(0,p,100,p,'#c19250','6 3')+txt(59,p+3,config.identify?'Policy':policy==='ceiling'?'Price ceiling':'Price floor');content+=line(qs,0,qs,p,'#aebbb7','3 4')+line(qd,0,qd,p,'#aebbb7','3 4')+txt(qs-4,-9,'Qₛ')+txt(qd-4,-9,'Qᴅ');}
+ }
+ return `<svg class="econ-graph" viewBox="0 0 400 350" role="img" aria-label="${esc(isPpc?'Production possibilities curve':'Supply and demand market graph')}"><title>${esc(isPpc?'Production possibilities curve':'Market graph')}</title><desc>${esc(config.identify?'Identify the visible curve using its slope, axis context and letter label.':isPpc?'Two outputs with a bowed-out production frontier and point A on it.':'Price and quantity axes with labeled curves. Dashed lines indicate equilibrium or policy.')}</desc><path d="M58 30V292H374" fill="none" stroke="#829693" stroke-width="1.5"/><path d="m54 37 4-7 4 7 M367 288l7 4-7 4" stroke="#829693" fill="none"/><text x="30" y="24">${esc(y)}</text><text x="320" y="335" text-anchor="middle">${esc(x)}</text><text x="42" y="310">0</text>${content}</svg>`;
+}
