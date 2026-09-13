@@ -1,7 +1,7 @@
-import {finalQuestions} from './units56.js';
-import {additionalQuestions} from './units34.js';
-import {explanationCorrections} from './explanations.js';
-import {importedQuestions} from './imported.js';
+import {finalQuestions} from './units56.js?v=macro2';
+import {additionalQuestions} from './units34.js?v=macro2';
+import {explanationCorrections} from './explanations.js?v=macro2';
+import {importedQuestions} from './imported.js?v=macro2';
 // Each authored item has one answer and a primary misconception for every distractor.
 const data=[
 ['1.1','concept','A school has more requests for laboratory time than available hours. What is the underlying problem?',['Scarcity','A shortage of money only','An absence of wants','Unlimited capital'],0,'Limited laboratory time cannot meet all wants, so the school must allocate it.','实验室时间有限，所以必须选择如何分配。','C1'],

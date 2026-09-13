@@ -1,6 +1,6 @@
-import {finalUnits,finalRows} from './units56.js';
-import {additionalUnits,additionalRows} from './units34.js';
-import {importedVocabulary} from './imported.js';
+import {finalUnits,finalRows} from './units56.js?v=macro2';
+import {additionalUnits,additionalRows} from './units34.js?v=macro2';
+import {importedVocabulary} from './imported.js?v=macro2';
 export const units=[{id:1,title:'Basic Economic Concepts',zh:'基本经济概念',description:'Start with choices. Understand how people allocate scarce resources.',color:'green'},{id:2,title:'Supply and Demand',zh:'供给与需求',description:'Read the market. Connect incentives, prices, policy and trade.',color:'blue'},...additionalUnits,...finalUnits];
 // Original summaries and practice material aligned to the user-supplied 2020 CED.
 const rows=[

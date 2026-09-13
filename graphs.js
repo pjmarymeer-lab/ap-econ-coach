@@ -1,5 +1,5 @@
-import {finalGraphs,finalGraphSVG} from './graphs56.js';
-import {additionalGraphs,firmGraphSVG} from './graphs34.js';
+import {finalGraphs,finalGraphSVG} from './graphs56.js?v=macro2';
+import {additionalGraphs,firmGraphSVG} from './graphs34.js?v=macro2';
 const make=(id,level,topic,model,prompt,fields,expected,explanation,zh)=>({id,level,topic,unit:Number(topic[0]),model,prompt,fields,expected,explanation,zh,target:90});
 const axes={x:['Quantity','Price','Good X','Good Y'],y:['Price','Quantity','Good Y','Good X']};
 const shift={curve:['Demand','Supply'],direction:['Right','Left'],price:['Up','Down'],quantity:['Up','Down']};

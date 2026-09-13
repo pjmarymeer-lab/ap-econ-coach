@@ -6,3 +6,9 @@
 @media(min-width:701px){.mobile-readiness{display:none!important}}
 @media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;transition:none!important}}
 .task-icon svg{width:21px;height:21px}.hero .econ-graph text{fill:#c4ded5}.hero .econ-graph>path{stroke:#9dbcb5}.hero .mini-graph{pointer-events:none}.topic-copy,.vocab-tile,.card{min-width:0}.vocab-tile h3,.topic-copy h3{overflow-wrap:break-word}
+
+.course-picker{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:24px}.course-choice{display:flex;flex-direction:column;gap:24px;padding:32px;transition:transform .15s}.course-choice:hover{transform:translateY(-3px)}.course-choice h2{font-size:30px;line-height:1.2}.course-choice.macro{border-top:5px solid #547a9e}.course-choice.micro{border-top:5px solid #417e6c}.course-stats{display:flex;flex-wrap:wrap;gap:12px;font-size:13px}.course-stats span{background:var(--bg);border-radius:20px;padding:7px 12px}.course-switch{font-size:13px;font-weight:600}.course-tag .text-link{font-size:12px;margin-top:10px}@media(max-width:700px){.course-picker{grid-template-columns:1fr}.course-choice{padding:24px}.course-choice h2{font-size:26px}.topbar .right{gap:10px}}
+
+.course-home .sidebar,.course-home .mobile-nav,.course-home .topbar .date,.course-home .topbar .avatar{display:none}.course-home .workspace{margin-left:0}.course-home .content{max-width:1120px;margin:auto}.course-home .breadcrumb{font-size:0}.course-home .breadcrumb:after{content:"AP Economics";font-size:16px;font-weight:600}
+
+.course-home .app-shell{display:block}
